@@ -19,7 +19,10 @@ pub fn send(account: &Account, msg: &lettre::Message) -> Result<()> {
         SmtpTransport::relay
     };
 
-    smtp_relay(&account.smtp_host)?
+    let builder = smtp_relay(&account.smtp_host)?;
+
+    builder
+        .port(account.smtp_port)
         .credentials(account.smtp_creds()?)
         .build()
         .send(msg)?;
